@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 크리스마스 트리 장식하기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #0a1628 0%, #1a365d 50%, #2d4a6f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        .tree-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .tree-emoji {
+            font-size: 400px;
+            line-height: 1;
+            filter: drop-shadow(0 0 30px rgba(34, 139, 34, 0.5));
+        }
+
+        /* 오너먼트 영역 */
+        .ornaments-container {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 350px;
+            pointer-events: none;
+        }
+
+        /* 오너먼트 스타일 */
+        .ornament {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+            pointer-events: auto;
+            animation: swing 2s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .ornament:hover {
+            animation: none;
+            transform: scale(1.5);
+            z-index: 100;
+        }
+
+        /* 입력 영역 */
+        .input-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-container textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: none;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-container textarea:focus {
+            outline: 2px solid #ffd700;
+        }
+
+        .input-container button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .input-container button:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .input-container button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 메시지 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fff9e6, #fffef0);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content .ornament-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .modal-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .modal-content .close-btn:hover {
+            color: #333;
+        }
+
+        /* 눈 내리는 효과 */
+        .snowflake {
+            position: fixed;
+            color: white;
+            font-size: 20px;
+            pointer-events: none;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* 장식 카운터 */
+        .counter {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        /* 로딩 상태 */
+        .loading {
+            color: #ffd700;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        /* 연결 상태 */
+        .status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .status.connected {
+            background: rgba(39, 174, 96, 0.8);
+        }
+
+        .status.disconnected {
+            background: rgba(231, 76, 60, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="status disconnected" id="status">연결 중...</div>
+
+    <h1>2025 크리스마스 트리</h1>
+
+    <div class="loading" id="loading">트리 불러오는 중...</div>
+
+    <div class="tree-container">
+        <div class="tree-emoji">🎄</div>
+        <div class="ornaments-container" id="ornaments"></div>
+    </div>
+
+    <div class="input-container">
+        <textarea id="messageInput" placeholder="팀원들에게 하고 싶은 메시지를 남기세요"></textarea>
+        <button onclick="addOrnament()" id="addBtn">🎀 장식하기 🎀</button>
+        <div class="counter">현재 장식 개수: <span id="count">0</span>개</div>
+    </div>
+
+    <!-- 메시지 모달 -->
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="ornament-icon" id="modalIcon"></div>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-6vM8eRykVTO0vr_VFpp3JsUBCzq_EpM",
+            authDomain: "s12works.firebaseapp.com",
+            databaseURL: "https://s12works-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "s12works",
+            storageBucket: "s12works.firebasestorage.app",
+            messagingSenderId: "736627343578",
+            appId: "1:736627343578:web:2c89853da5a8e5bb6365e3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const ornamentsRef = ref(database, 'tree2025');
+
+        const icons = ['🎁', '❤️', '💚', '💙', '💛', '💜', '🧡', '🤍', '⭐', '🔔', '🎀', '🍬', '🍭', '🧦', '☃️', '🦌', '🎅', '🤶', '👼', '🕯️'];
+
+        function getValidPosition() {
+            const y = Math.random() * 320 + 30;
+            const progress = y / 350;
+            const maxWidth = 30 + progress * 240;
+            const centerX = 150;
+            const x = centerX - maxWidth/2 + Math.random() * maxWidth;
+            return { x, y };
+        }
+
+        function renderOrnament(id, data) {
+            const container = document.getElementById('ornaments');
+
+            if (document.getElementById('ornament-' + id)) return;
+
+            const ornament = document.createElement('div');
+            ornament.className = 'ornament';
+            ornament.id = 'ornament-' + id;
+            ornament.style.left = data.x + 'px';
+            ornament.style.top = data.y + 'px';
+            ornament.style.animationDelay = Math.random() * 2 + 's';
+            ornament.innerHTML = data.icon;
+            ornament.onclick = function() {
+                showMessage(data.message, data.icon);
+            };
+
+            container.appendChild(ornament);
+        }
+
+        onValue(ornamentsRef, (snapshot) => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('status').textContent = '연결됨';
+            document.getElementById('status').className = 'status connected';
+
+            const container = document.getElementById('ornaments');
+            container.innerHTML = ''; // 기존 오너먼트 초기화
+
+            const data = snapshot.val();
+            let count = 0;
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    renderOrnament(key, data[key]);
+                    count++;
+                });
+            }
+
+            document.getElementById('count').textContent = count;
+        }, (error) => {
+            console.error('Firebase 에러:', error);
+            document.getElementById('loading').textContent = 'Firebase 연결 실패. 설정을 확인하세요.';
+            document.getElementById('status').textContent = '연결 실패';
+            document.getElementById('status').className = 'status disconnected';
+        });
+
+        window.addOrnament = async function() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+
+            if (!message) {
+                alert('메시지를 입력해주세요!');
+                return;
+            }
+
+            const btn = document.getElementById('addBtn');
+            btn.disabled = true;
+            btn.textContent = '추가 중...';
+
+            try {
+                const pos = getValidPosition();
+                const icon = icons[Math.floor(Math.random() * icons.length)];
+
+                await push(ornamentsRef, {
+                    message: message,
+                    icon: icon,
+                    x: pos.x,
+                    y: pos.y,
+                    createdAt: Date.now()
+                });
+
+                messageInput.value = '';
+            } catch (error) {
+                console.error('오너먼트 추가 실패:', error);
+                alert('장식 추가에 실패했습니다. 다시 시도해주세요.');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🎀 장식하기 🎀';
+        }
+
+        window.showMessage = function(message, icon) {
+            document.getElementById('modalIcon').textContent = icon;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        window.closeModal = function(event) {
+            if (!event || event.target.id === 'modal' || event.target.classList.contains('close-btn')) {
+                document.getElementById('modal').classList.remove('active');
+            }
+        }
+
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                window.addOrnament();
+            }
+        });
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+
+        setInterval(createSnowflake, 1000);
+    </script>
+</body>
+</html>
