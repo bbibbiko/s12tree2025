@@ -18,7 +18,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
             overflow-x: hidden;
         }
 
@@ -35,7 +35,7 @@
         }
 
         .tree-emoji {
-            font-size: 400px;
+            font-size: 640px;
             line-height: 1;
             filter: drop-shadow(0 0 30px rgba(34, 139, 34, 0.5));
         }
@@ -73,7 +73,6 @@
             z-index: 100;
         }
 
-        /* 입력 영역 */
         .input-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -126,7 +125,6 @@
             transform: none;
         }
 
-        /* 메시지 모달 */
         .modal {
             display: none;
             position: fixed;
@@ -186,7 +184,6 @@
             color: #333;
         }
 
-        /* 눈 내리는 효과 */
         .snowflake {
             position: fixed;
             color: white;
@@ -201,7 +198,6 @@
             100% { transform: translateY(100vh) rotate(360deg); }
         }
 
-        /* 장식 카운터 */
         .counter {
             color: #fff;
             font-size: 14px;
@@ -209,14 +205,12 @@
             opacity: 0.8;
         }
 
-        /* 로딩 상태 */
         .loading {
             color: #ffd700;
             font-size: 18px;
             margin-bottom: 20px;
         }
 
-        /* 연결 상태 */
         .status {
             position: fixed;
             top: 10px;
@@ -238,9 +232,6 @@
 </head>
 <body>
     <div class="status disconnected" id="status">연결 중...</div>
-
-    <h1>2025 크리스마스 트리</h1>
-
     <div class="loading" id="loading">트리 불러오는 중...</div>
 
     <div class="tree-container">
